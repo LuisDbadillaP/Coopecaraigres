@@ -1,0 +1,50 @@
+body{
+    background-color: aquamarine;
+}
+
+h1 {
+    color: brown;
+    text-align: center;
+    margin-top: 20%;
+}
+
+form {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    width: 20%;
+    padding: 10px;
+    border: 5px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  input[type="password"] {
+    border-color: #923838; /* Optional: Blueish border for password */
+  }
+  
+   /* Como Personalizar el boton Iniciar Sesión */
+  input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+   
+  /* Como cambiar de color al pasar mouse Encima */
+  input[type="submit"]:hover {
+    background-color: #ce2b2b;
+  }
+  

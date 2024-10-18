@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .form-group label {
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .edit-row input {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="tabla">
+    <h1>Tabla Usuarios</h1>
+    
+    <!-- Formulario de inserción -->
+    <form action="/insert" method="POST">
+        <div class="form-group">
+            <label for="codigo-insertar">Código:</label>
+            <input type="text" id="codigo-insertar" name="codigo" required>
+        </div>
+        <div class="form-group">
+            <label for="nombre-insertar">Nombre:</label>
+            <input type="text" id="nombre-insertar" name="nombre" required>
+        </div>
+        <div class="form-group">
+            <label for="menu-insertar">Menú:</label>
+            <input type="text" id="menu-insertar" name="menu" required>
+        </div>
+        <input type="submit" value="Insertar">
+    </form>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Ubic</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr class="data-row">
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>
+                    <button class="btn-modify" data-codigo="{{ row[0] }}" data-nombre="{{ row[1] }}" data-menu="{{ row[2] }}">Modificar</button>
+                    <button class="btn-save" style="display: none;">Guardar</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="form-modificar" style="display: none;">
+        <h2>Modificar Datos</h2>
+        <form action="/modificar" method="POST">
+            <div class="form-group">
+                <label for="codigo-modificar">Código:</label>
+                <input type="text" id="codigo-modificar" name="codigo" readonly>
+            </div>
+            <div class="form-group">
+                <label for="nombre-modificar">Nombre:</label>
+                <input type="text" id="nombre-modificar" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="menu-modificar">Menú:</label>
+                <input type="text" id="menu-modificar" name="menu" required>
+            </div>
+            <input type="submit" value="Guardar">
+        </form>
+    </div>
+
+    <script>
+        const btnModifyList = document.querySelectorAll('.btn-modify');
+        const btnSaveList = document.querySelectorAll('.btn-save');
+        const formModificar = document.getElementById('form-modificar');
+        const codigoModificar = document.getElementById('codigo-modificar');
+        const nombreModificar = document.getElementById('nombre-modificar');
+        const menuModificar = document.getElementById('menu-modificar');
+
+        btnModifyList.forEach((btnModify, index) => {
+            btnModify.addEventListener('click', () => {
+                const codigo = btnModify.dataset.codigo;
+                const nombre = btnModify.dataset.nombre;
+                const menu = btnModify.dataset.menu;
+
+                codigoModificar.value = codigo;
+                nombreModificar.value = nombre;
+                menuModificar.value = menu;
+
+                // Mostrar el formulario de modificación
+                formModificar.style.display = 'block';
+
+                // Ocultar el botón "Modificar" y mostrar el botón "Guardar"
+                btnModify.style.display = 'none';
+                btnSaveList[index].style.display = 'inline-block';
+            });
+        });
+
+        btnSaveList.forEach((btnSave, index) => {
+            btnSave.addEventListener('click', () => {
+                // Obtener los datos modificados del formulario
+                const codigo = codigoModificar.value;
+                const nombre = nombreModificar.value;
+                const menu = menuModificar.value;
+
+                // Actualizar los valores en la tabla
+                const dataRow = btnSave.parentNode.parentNode;
+                dataRow.querySelector('td:nth-child(2)').textContent = nombre;
+                dataRow.querySelector('td:nth-child(3)').textContent = menu;
+
+                // Ocultar el formulario de modificación
+                formModificar.style.display = 'none';
+
+                // Mostrar el botón "Modificar" y ocultar el botón "Guardar"
+                btnModifyList[index].style.display = 'inline-block';
+                btnSave.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
